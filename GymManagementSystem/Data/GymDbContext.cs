@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using GymManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementSystem.Data;
 
-public partial class GymDbContext : DbContext
+public partial class GymDbContext : IdentityDbContext<ApplicationUser>
 {
     public GymDbContext()
     {
@@ -32,6 +33,14 @@ public partial class GymDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Member>().ToTable("Members", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Trainer>().ToTable("Trainers", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<MembershipPlan>().ToTable("MembershipPlans", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Payment>().ToTable("Payments", t => t.ExcludeFromMigrations());
+        modelBuilder.Entity<Attendance>().ToTable("Attendance", t => t.ExcludeFromMigrations());
+
         modelBuilder.Entity<Attendance>(entity =>
         {
             entity.HasKey(e => e.AttendanceId).HasName("PK__Attendan__8B69261C9DFB6034");

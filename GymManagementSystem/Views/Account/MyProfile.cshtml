@@ -1,0 +1,33 @@
+﻿@model GymManagementSystem.Models.ApplicationUser
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_StaticLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-5 text-center">
+                    <i class="bi bi-person-circle text-warning" style="font-size:4rem;"></i>
+                    <h3 class="fw-bold mt-3">@Model.FullName</h3>
+                    <span class="badge bg-warning text-dark px-3 py-2 mb-3">Member</span>
+
+                    <hr />
+
+                    <div class="text-start">
+                        <p><i class="bi bi-envelope me-2 text-muted"></i> <strong>Email:</strong> @Model.Email</p>
+                        <p><i class="bi bi-phone me-2 text-muted"></i> <strong>Phone:</strong> @(Model.PhoneNumber ?? "Not provided")</p>
+                        <p><i class="bi bi-shield-check me-2 text-muted"></i> <strong>Role:</strong> @Model.Role</p>
+                    </div>
+
+                    <hr />
+
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger w-100 mt-2">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

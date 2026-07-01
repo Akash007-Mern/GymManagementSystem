@@ -1,8 +1,147 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to FitZone";
+    Layout = "~/Views/Shared/_StaticLayout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- HERO SECTION -->
+<div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 100px 0; text-align: center;">
+    <div class="container">
+        <i class="bi bi-lightning-charge-fill text-warning" style="font-size: 4rem;"></i>
+        <h1 class="mt-3 fw-bold" style="font-size: 3rem;">Welcome to FitZone</h1>
+        <p class="lead mb-4" style="opacity: 0.85;">
+            A complete Gym Management System — manage members, trainers,<br />
+            plans, payments and attendance all in one place.
+        </p>
+        <a asp-controller="Members" asp-action="Index" class="btn btn-warning btn-lg fw-bold me-3">
+            <i class="bi bi-speedometer2"></i> Go to Dashboard
+        </a>
+        <a asp-controller="Members" asp-action="Create" class="btn btn-outline-light btn-lg">
+            <i class="bi bi-plus-circle"></i> Add Member
+        </a>
+    </div>
+</div>
+
+<!-- STATS SECTION -->
+<div class="container mt-5">
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-3">
+            <div class="rounded-4 p-4 text-white shadow"
+                 style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div style="font-size:2.2rem; font-weight:700;">—</div>
+                        <div style="font-size:0.9rem; opacity:0.85;">Total Members</div>
+                    </div>
+                    <i class="bi bi-people-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="rounded-4 p-4 text-white shadow"
+                 style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div style="font-size:2.2rem; font-weight:700;">—</div>
+                        <div style="font-size:0.9rem; opacity:0.85;">Trainers</div>
+                    </div>
+                    <i class="bi bi-person-badge-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="rounded-4 p-4 text-white shadow"
+                 style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div style="font-size:2.2rem; font-weight:700;">—</div>
+                        <div style="font-size:0.9rem; opacity:0.85;">Active Plans</div>
+                    </div>
+                    <i class="bi bi-card-checklist" style="font-size:2.5rem; opacity:0.3;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="rounded-4 p-4 text-white shadow"
+                 style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div style="font-size:2.2rem; font-weight:700;">—</div>
+                        <div style="font-size:0.9rem; opacity:0.85;">Payments This Month</div>
+                    </div>
+                    <i class="bi bi-cash-coin" style="font-size:2.5rem; opacity:0.3;"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QUICK ACCESS CARDS -->
+    <h4 class="fw-bold mb-4">Quick Access</h4>
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
+                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i class="bi bi-people-fill text-primary" style="font-size:2.5rem;"></i>
+                <h5 class="fw-bold mt-3">Members</h5>
+                <p class="text-muted small">Register new members, view profiles, update or remove existing members.</p>
+                <a asp-controller="Members" asp-action="Index" class="btn btn-primary btn-sm px-4">Manage Members</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
+                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i class="bi bi-person-badge-fill text-danger" style="font-size:2.5rem;"></i>
+                <h5 class="fw-bold mt-3">Trainers</h5>
+                <p class="text-muted small">Manage your gym trainers, their specialties and member assignments.</p>
+                <a asp-controller="Trainers" asp-action="Index" class="btn btn-danger btn-sm px-4">Manage Trainers</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
+                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i class="bi bi-card-checklist text-success" style="font-size:2.5rem;"></i>
+                <h5 class="fw-bold mt-3">Membership Plans</h5>
+                <p class="text-muted small">Create monthly, quarterly and yearly plans with custom pricing.</p>
+                <a asp-controller="MembershipPlans" asp-action="Index" class="btn btn-success btn-sm px-4">Manage Plans</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
+                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i class="bi bi-cash-stack text-warning" style="font-size:2.5rem;"></i>
+                <h5 class="fw-bold mt-3">Payments</h5>
+                <p class="text-muted small">Record member fee payments and track full payment history.</p>
+                <a asp-controller="Payments" asp-action="Index" class="btn btn-warning btn-sm px-4">Manage Payments</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
+                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i class="bi bi-calendar2-check-fill text-info" style="font-size:2.5rem;"></i>
+                <h5 class="fw-bold mt-3">Attendance</h5>
+                <p class="text-muted small">Mark daily attendance and view member check-in history.</p>
+                <a asp-controller="Attendance" asp-action="Index" class="btn btn-info btn-sm px-4">Manage Attendance</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
+                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+                <i class="bi bi-bar-chart-fill text-secondary" style="font-size:2.5rem;"></i>
+                <h5 class="fw-bold mt-3">Reports</h5>
+                <p class="text-muted small">View statistics and export data records for your gym.</p>
+                <a href="#" class="btn btn-secondary btn-sm px-4">Coming Soon</a>
+            </div>
+        </div>
+
+    </div>
 </div>

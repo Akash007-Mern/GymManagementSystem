@@ -1,0 +1,108 @@
+@model GymManagementSystem.Models.Member
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Member</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JoinDate" class="control-label"></label>
+                <input asp-for="JoinDate" class="form-control" />
+                <span asp-validation-for="JoinDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PlanId" class="control-label"></label>
+                <input asp-for="PlanId" class="form-control" />
+                <span asp-validation-for="PlanId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TrainerId" class="control-label"></label>
+                <input asp-for="TrainerId" class="form-control" />
+                <span asp-validation-for="TrainerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IsActive" class="control-label"></label>
+                <input asp-for="IsActive" class="form-check-input" />
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Attendances" class="control-label"></label>
+                <input asp-for="Attendances" class="form-control" />
+                <span asp-validation-for="Attendances" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Payments" class="control-label"></label>
+                <input asp-for="Payments" class="form-control" />
+                <span asp-validation-for="Payments" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Plan" class="control-label"></label>
+                <input asp-for="Plan" class="form-control" />
+                <span asp-validation-for="Plan" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Trainer" class="control-label"></label>
+                <input asp-for="Trainer" class="form-control" />
+                <span asp-validation-for="Trainer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
