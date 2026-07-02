@@ -1,0 +1,81 @@
+﻿@model GymManagementSystem.Models.Trainer
+@{
+    ViewData["Title"] = "Add Trainer";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-person-plus-fill text-danger me-2"></i>Add New Trainer
+        </h2>
+        <p class="page-subtitle">Fill in the trainer details below</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-5">
+        <form asp-action="Create" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="FullName" class="form-label fw-semibold">Full Name</label>
+                    <input asp-for="FullName" class="form-control" placeholder="Trainer full name" />
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Specialty" class="form-label fw-semibold">Specialty</label>
+                    <select asp-for="Specialty" class="form-select">
+                        <option value="">-- Select Specialty --</option>
+                        <option value="Weight Training">Weight Training</option>
+                        <option value="Cardio">Cardio</option>
+                        <option value="Yoga">Yoga</option>
+                        <option value="CrossFit">CrossFit</option>
+                        <option value="Zumba">Zumba</option>
+                        <option value="Martial Arts">Martial Arts</option>
+                        <option value="Swimming">Swimming</option>
+                        <option value="General Fitness">General Fitness</option>
+                    </select>
+                    <span asp-validation-for="Specialty" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label fw-semibold">Phone</label>
+                    <input asp-for="Phone" class="form-control" placeholder="98XXXXXXXX" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="trainer@gym.com" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="JoinDate" class="form-label fw-semibold">Join Date</label>
+                    <input asp-for="JoinDate" class="form-control" type="date" />
+                    <span asp-validation-for="JoinDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="IsActive" class="form-label fw-semibold">Status</label>
+                    <select asp-for="IsActive" class="form-select">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-danger fw-bold px-5">
+                    <i class="bi bi-check-circle me-1"></i> Save Trainer
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

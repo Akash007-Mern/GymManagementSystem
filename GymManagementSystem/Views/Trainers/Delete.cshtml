@@ -1,0 +1,44 @@
+﻿@model GymManagementSystem.Models.Trainer
+@{
+    ViewData["Title"] = "Delete Trainer";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h2 class="page-title text-danger">
+        <i class="bi bi-trash-fill me-2"></i>Delete Trainer
+    </h2>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 border-danger">
+    <div class="card-body p-5">
+        <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Are you sure you want to delete trainer <strong>@Model.FullName</strong>?
+            This action cannot be undone!
+        </div>
+
+        <dl class="row mt-3">
+            <dt class="col-sm-3 text-muted">Name</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
+
+            <dt class="col-sm-3 text-muted">Specialty</dt>
+            <dd class="col-sm-9">@Model.Specialty</dd>
+
+            <dt class="col-sm-3 text-muted">Phone</dt>
+            <dd class="col-sm-9">@(Model.Phone ?? "N/A")</dd>
+        </dl>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="TrainerId" />
+            <button type="submit" class="btn btn-danger fw-bold px-5">
+                <i class="bi bi-trash me-1"></i> Yes, Delete
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary px-4 ms-2">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<GymManagementSystem.Models.Trainer>
+@{
+    ViewData["Title"] = "Trainers";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-person-badge-fill text-danger me-2"></i>Trainers
+        </h2>
+        <p class="page-subtitle">Manage your gym trainers</p>
+    </div>
+    <a asp-action="Create" class="btn btn-danger fw-bold px-4">
+        <i class="bi bi-plus-circle me-1"></i> Add Trainer
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="bi bi-person-badge text-muted" style="font-size:4rem;"></i>
+        <h5 class="mt-3 text-muted">No trainers found</h5>
+        <a asp-action="Create" class="btn btn-danger mt-2">Add First Trainer</a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var trainer in Model)
+        {
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+                            <div style="width:55px; height:55px; border-radius:50%;
+                                background: linear-gradient(135deg,#f093fb,#f5576c);
+                                display:flex; align-items:center; justify-content:center;">
+                                <i class="bi bi-person-fill text-white" style="font-size:1.4rem;"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-0">@trainer.FullName</h5>
+                                <span class="badge bg-danger-subtle text-danger">
+                                    @trainer.Specialty
+                                </span>
+                            </div>
+                        </div>
+
+                        <hr class="my-2" />
+
+                        <p class="small mb-1">
+                            <i class="bi bi-telephone text-muted me-2"></i>
+                            @(trainer.Phone ?? "No phone")
+                        </p>
+                        <p class="small mb-1">
+                            <i class="bi bi-envelope text-muted me-2"></i>
+                            @(trainer.Email ?? "No email")
+                        </p>
+                        <p class="small mb-1">
+                            <i class="bi bi-calendar text-muted me-2"></i>
+                            Joined: @trainer.JoinDate.ToString("dd MMM yyyy")
+                        </p>
+                        <p class="small mb-3">
+                            <i class="bi bi-circle-fill me-2"
+                               style="font-size:0.5rem; color: @(trainer.IsActive == true ? "#28a745" : "#dc3545")"></i>
+                            @(trainer.IsActive == true ? "Active" : "Inactive")
+                        </p>
+
+                        <div class="d-flex gap-2 mt-auto">
+                            <a asp-action="Details" asp-route-id="@trainer.TrainerId"
+                               class="btn btn-outline-info btn-sm flex-fill">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@trainer.TrainerId"
+                               class="btn btn-outline-warning btn-sm flex-fill">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@trainer.TrainerId"
+                               class="btn btn-outline-danger btn-sm flex-fill">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,100 @@
+﻿using GymManagementSystem.Data;
+using GymManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace GymManagementSystem.Controllers
+{
+[Authorize(Roles = "Admin")]
+public class MembershipPlansController : Controller
+{
+private readonly GymManagementDB _context;
+
+public MembershipPlansController(GymManagementDB context)
+{
+_context = context;
+}
+
+public async Task<IActionResult>
+Index()
+{
+var plans = await _context.MembershipPlans.ToListAsync();
+return View(plans);
+}
+
+public async Task<IActionResult>
+Details(int? id)
+{
+if (id == null) return NotFound();
+var plan = await _context.MembershipPlans
+.FirstOrDefaultAsync(p => p.PlanId == id);
+if (plan == null) return NotFound();
+return View(plan);
+}
+
+public IActionResult Create()
+{
+return View();
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult>
+Create(MembershipPlan plan)
+{
+if (ModelState.IsValid)
+{
+_context.Add(plan);
+await _context.SaveChangesAsync();
+return RedirectToAction(nameof(Index));
+}
+return View(plan);
+}
+
+public async Task<IActionResult>
+Edit(int? id)
+{
+if (id == null) return NotFound();
+var plan = await _context.MembershipPlans.FindAsync(id);
+if (plan == null) return NotFound();
+return View(plan);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult>
+Edit(int id, MembershipPlan plan)
+{
+if (id != plan.PlanId) return NotFound();
+if (ModelState.IsValid)
+{
+_context.Update(plan);
+await _context.SaveChangesAsync();
+return RedirectToAction(nameof(Index));
+}
+return View(plan);
+}
+
+public async Task<IActionResult>
+Delete(int? id)
+{
+if (id == null) return NotFound();
+var plan = await _context.MembershipPlans
+.FirstOrDefaultAsync(p => p.PlanId == id);
+if (plan == null) return NotFound();
+return View(plan);
+}
+
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult>
+DeleteConfirmed(int id)
+{
+var plan = await _context.MembershipPlans.FindAsync(id);
+if (plan != null) _context.MembershipPlans.Remove(plan);
+await _context.SaveChangesAsync();
+return RedirectToAction(nameof(Index));
+}
+}
+}
