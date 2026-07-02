@@ -1,0 +1,81 @@
+@model GymManagementSystem.Models.Payment
+@{
+    ViewData["Title"] = "Edit Payment";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-pencil-fill text-warning me-2"></i>Edit Payment
+        </h2>
+        <p class="page-subtitle">Update payment record</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-5">
+        <form asp-action="Edit" autocomplete="off">
+            <input type="hidden" asp-for="PaymentId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="MemberId" class="form-label fw-semibold">Member</label>
+                    <select asp-for="MemberId" class="form-select"
+                            asp-items="ViewBag.MemberId">
+                        <option value="">-- Select Member --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PlanId" class="form-label fw-semibold">Plan</label>
+                    <select asp-for="PlanId" class="form-select"
+                            asp-items="ViewBag.PlanId">
+                        <option value="">-- Select Plan --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="AmountPaid" class="form-label fw-semibold">
+                        Amount (Rs.)
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">Rs.</span>
+                        <input asp-for="AmountPaid" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PaymentDate" class="form-label fw-semibold">
+                        Payment Date
+                    </label>
+                    <input asp-for="PaymentDate" class="form-control" type="date" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ValidUntil" class="form-label fw-semibold">
+                        Valid Until
+                    </label>
+                    <input asp-for="ValidUntil" class="form-control" type="date" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Notes" class="form-label fw-semibold">Notes</label>
+                    <input asp-for="Notes" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-warning fw-bold px-5">
+                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

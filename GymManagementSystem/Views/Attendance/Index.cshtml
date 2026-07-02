@@ -1,0 +1,142 @@
+@model IEnumerable<GymManagementSystem.Models.Attendance>
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-calendar2-check-fill text-info me-2"></i>Attendance
+        </h2>
+        <p class="page-subtitle">Track member check-ins and check-outs</p>
+    </div>
+    <a asp-action="Create" class="btn btn-info fw-bold px-4 text-white">
+        <i class="bi bi-plus-circle me-1"></i> Mark Attendance
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="bi bi-calendar-x text-muted" style="font-size:4rem;"></i>
+        <h5 class="mt-3 text-muted">No attendance records found</h5>
+        <a asp-action="Create" class="btn btn-info text-white mt-2">
+            Mark First Attendance
+        </a>
+    </div>
+}
+else
+{
+    <!-- Summary -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 rounded-4 p-3 text-white"
+                 style="background: linear-gradient(135deg,#4facfe,#00f2fe);">
+                <p class="small mb-1 opacity-75">Today's Attendance</p>
+                <h3 class="fw-bold mb-0">
+                    @Model.Count(a => a.CheckInTime.Date == DateTime.Today)
+                </h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 rounded-4 p-3 text-white"
+                 style="background: linear-gradient(135deg,#43e97b,#38f9d7);">
+                <p class="small mb-1 opacity-75">Checked Out</p>
+                <h3 class="fw-bold mb-0">
+                    @Model.Count(a => a.CheckOutTime != null
+                        && a.CheckInTime.Date == DateTime.Today)
+                </h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 rounded-4 p-3 text-white"
+                 style="background: linear-gradient(135deg,#f093fb,#f5576c);">
+                <p class="small mb-1 opacity-75">Still Inside</p>
+                <h3 class="fw-bold mb-0">
+                    @Model.Count(a => a.CheckOutTime == null
+                        && a.CheckInTime.Date == DateTime.Today)
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Table -->
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Check-In Time</th>
+                        <th>Check-Out Time</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.Member?.FullName</strong>
+                            </td>
+                            <td>
+                                <i class="bi bi-box-arrow-in-right text-success me-1"></i>
+                                @item.CheckInTime.ToString("dd MMM yyyy, hh:mm tt")
+                            </td>
+                            <td>
+                                @if (item.CheckOutTime.HasValue)
+                                {
+                                    <i class="bi bi-box-arrow-right text-danger me-1"></i>
+                                    @item.CheckOutTime.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.CheckOutTime.HasValue)
+                                {
+                                    var duration = item.CheckOutTime.Value - item.CheckInTime;
+                                    @($"{(int)duration.TotalHours}h {duration.Minutes}m")
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">In progress</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.CheckOutTime.HasValue)
+                                {
+                                    <span class="badge bg-secondary">Completed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Inside</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!item.CheckOutTime.HasValue)
+                                {
+                                    <form asp-action="CheckOut" asp-route-id="@item.AttendanceId"
+                                          method="post" class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-success btn-sm fw-bold">
+                                            <i class="bi bi-box-arrow-right"></i> Check Out
+                                        </button>
+                                    </form>
+                                }
+                                <a asp-action="Delete" asp-route-id="@item.AttendanceId"
+                                   class="btn btn-outline-danger btn-sm ms-1">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

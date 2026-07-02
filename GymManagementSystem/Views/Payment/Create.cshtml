@@ -1,0 +1,89 @@
+@model GymManagementSystem.Models.Payment
+@{
+    ViewData["Title"] = "Record Payment";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-cash-coin text-warning me-2"></i>Record Payment
+        </h2>
+        <p class="page-subtitle">Record a new member fee payment</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-5">
+        <form asp-action="Create" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="MemberId" class="form-label fw-semibold">Member</label>
+                    <select asp-for="MemberId" class="form-select"
+                            asp-items="ViewBag.MemberId">
+                        <option value="">-- Select Member --</option>
+                    </select>
+                    <span asp-validation-for="MemberId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PlanId" class="form-label fw-semibold">
+                        Membership Plan
+                    </label>
+                    <select asp-for="PlanId" class="form-select"
+                            asp-items="ViewBag.PlanId">
+                        <option value="">-- Select Plan --</option>
+                    </select>
+                    <span asp-validation-for="PlanId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="AmountPaid" class="form-label fw-semibold">
+                        Amount Paid (Rs.)
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">Rs.</span>
+                        <input asp-for="AmountPaid" class="form-control"
+                               placeholder="1500" />
+                    </div>
+                    <span asp-validation-for="AmountPaid" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PaymentDate" class="form-label fw-semibold">
+                        Payment Date
+                    </label>
+                    <input asp-for="PaymentDate" class="form-control" type="date" />
+                    <span asp-validation-for="PaymentDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-12">
+                    <label asp-for="Notes" class="form-label fw-semibold">
+                        Notes (Optional)
+                    </label>
+                    <input asp-for="Notes" class="form-control"
+                           placeholder="Any additional notes..." />
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-3 small">
+                <i class="bi bi-info-circle me-1"></i>
+                <strong>Note:</strong> Valid Until date will be automatically
+                calculated based on the selected plan duration.
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-warning fw-bold px-5">
+                    <i class="bi bi-check-circle me-1"></i> Record Payment
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+@model GymManagementSystem.Models.Attendance
+@{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-calendar-plus-fill text-info me-2"></i>Mark Attendance
+        </h2>
+        <p class="page-subtitle">Record member check-in</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-5">
+        <form asp-action="Create" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="MemberId" class="form-label fw-semibold">
+                        Select Member
+                    </label>
+                    <select asp-for="MemberId" class="form-select"
+                            asp-items="ViewBag.MemberId">
+                        <option value="">-- Select Active Member --</option>
+                    </select>
+                    <span asp-validation-for="MemberId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CheckInTime" class="form-label fw-semibold">
+                        Check-In Time
+                    </label>
+                    <input asp-for="CheckInTime" class="form-control"
+                           type="datetime-local"
+                           value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-3 small">
+                <i class="bi bi-info-circle me-1"></i>
+                Check-out time can be marked later from the attendance list.
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-info fw-bold px-5 text-white">
+                    <i class="bi bi-check-circle me-1"></i> Mark Check-In
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
