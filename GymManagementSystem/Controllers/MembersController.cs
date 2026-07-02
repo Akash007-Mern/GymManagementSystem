@@ -18,14 +18,13 @@ namespace GymManagementSystem.Controllers
             _context = context;
         }
 
-        // READ - Show list of all members
         public async Task<IActionResult> Index()
         {
-            // Get all members, including their Plan and Trainer info
             var members = await _context.Members
                 .Include(m => m.Plan)
                 .Include(m => m.Trainer)
                 .ToListAsync();
+
             return View(members);
         }
 

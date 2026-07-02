@@ -4,24 +4,45 @@
     Layout = "~/Views/Shared/_StaticLayout.cshtml";
 }
 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input').forEach(function (input) {
+                if (input.type !== 'hidden') {
+                    input.value = '';
+                }
+            });
+        });
+    </script>
+}
+
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card shadow-lg border-0 rounded-4" style="width: 420px;">
-
         <div class="card-body p-5">
+
             <div class="text-center mb-4">
                 <i class="bi bi-lightning-charge-fill text-warning" style="font-size:2.5rem;"></i>
                 <h3 class="fw-bold mt-2">FitZone Login</h3>
                 <p class="text-muted small">Sign in to your account</p>
             </div>
 
-            <form asp-action="Login" method="post">
-                <div asp-validation-summary="All" class="alert alert-danger py-2 small" style="display:none;"></div>
+            <form asp-action="Login" method="post" autocomplete="off">
+
+                @* ✅ FIX 1: Only show red box if there is actually an error *@
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="alert alert-danger py-2 small"></div>
+                }
 
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label fw-semibold">Email Address</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
-                        <input asp-for="Email" class="form-control" placeholder="admin@fitzone.com" />
+                        <span class="input-group-text bg-light">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input asp-for="Email" class="form-control"
+                               placeholder="Enter your email"
+                               autocomplete="off" />
                     </div>
                     <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
@@ -29,16 +50,22 @@
                 <div class="mb-3">
                     <label asp-for="Password" class="form-label fw-semibold">Password</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
-                        <input asp-for="Password" class="form-control" placeholder="••••••" />
+                        <span class="input-group-text bg-light">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input asp-for="Password" class="form-control"
+                               placeholder="Enter your password"
+                               autocomplete="new-password" />
                     </div>
                     <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
 
-                <div class="mb-4 d-flex justify-content-between align-items-center">
+                <div class="mb-4">
                     <div class="form-check">
                         <input asp-for="RememberMe" class="form-check-input" />
-                        <label asp-for="RememberMe" class="form-check-label small">Remember me</label>
+                        <label asp-for="RememberMe" class="form-check-label small">
+                            Remember me
+                        </label>
                     </div>
                 </div>
 
@@ -48,15 +75,20 @@
             </form>
 
             <hr class="my-4" />
+
+            @* ✅ FIX 2: Only "Create account" link here — no Register button in navbar *@
             <p class="text-center small text-muted mb-0">
                 New member?
-                <a asp-action="Register" class="text-warning fw-bold">Create account</a>
+                <a asp-controller="Account" asp-action="Register" class="text-warning fw-bold">
+                    Create account
+                </a>
             </p>
 
-            <!-- Hint box for demo -->
             <div class="alert alert-light border mt-3 small">
+                <i class="bi bi-info-circle text-warning"></i>
                 <strong>Admin:</strong> admin@fitzone.com / Admin@123
             </div>
+
         </div>
     </div>
 </div>

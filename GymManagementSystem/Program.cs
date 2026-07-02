@@ -9,19 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GymDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GymConnection")));
 
-// 2. Add Identity with Roles
+// 2. Add Identity with Roles support
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
+    // Password rules — keep simple for now
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
+
+    // Login settings
     options.SignIn.RequireConfirmedAccount = false;
 })
 .AddEntityFrameworkStores<GymDbContext>()
 .AddDefaultTokenProviders();
 
-// 3. Login/Logout redirect paths
+// 3. Where to redirect if not logged in
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -33,7 +36,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// 5. Auto-create Admin on first run
+// 5. Seed Admin user on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -44,7 +47,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-// ORDER MATTERS — Authentication must come before Authorization
+// IMPORTANT ORDER: Authentication before Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 

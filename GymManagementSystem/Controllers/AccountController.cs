@@ -1,9 +1,8 @@
-﻿using GymManagementSystem.Data;
-using GymManagementSystem.Models;
+﻿using GymManagementSystem.Models;
 using GymManagementSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace GymManagementSystem.Controllers
 {
@@ -104,9 +103,26 @@ namespace GymManagementSystem.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+
+            // Clear all cookies and cache so old form data doesn't show
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
+
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
+
+            return RedirectToAction("LogoutAnimation", "Account");
         }
 
+        // New action - shows animation then redirects to home
+        [AllowAnonymous]
+        public IActionResult LogoutAnimation()
+        {
+            return View();
+        }
         // ─── ACCESS DENIED ───────────────────────────────────
         public IActionResult AccessDenied()
         {

@@ -4,6 +4,19 @@
     Layout = "~/Views/Shared/_StaticLayout.cshtml";
 }
 
+@section Scripts {
+    <script>
+        // Clear all form fields when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input').forEach(function (input) {
+                if (input.type !== 'hidden') {
+                    input.value = '';
+                }
+            });
+        });
+    </script>
+}
+
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card shadow-lg border-0 rounded-4" style="width: 460px;">
         <div class="card-body p-5">
