@@ -1,171 +1,252 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_StaticLayout.cshtml";
 }
 
+<style>
+    .stat-num {
+        font-size: 2.2rem;
+        font-weight: 700;
+        animation: countUp 0.6s ease forwards;
+    }
+</style>
+
 <!-- PAGE HEADER -->
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 animate-fadeup">
     <div>
         <h2 class="page-title">
             <i class="bi bi-speedometer2 text-warning me-2"></i>Dashboard
         </h2>
         <p class="page-subtitle">
-            Welcome back, Admin! Here's what's happening today.
+            Welcome back, <strong>Admin</strong>!
+            Here's what's happening today.
         </p>
     </div>
-    <div class="text-muted small">
-        <i class="bi bi-calendar3 me-1"></i>
+    <div class="text-muted small bg-white px-3 py-2 rounded-3 shadow-sm">
+        <i class="bi bi-calendar3 me-1 text-warning"></i>
         @DateTime.Now.ToString("dddd, dd MMMM yyyy")
     </div>
 </div>
 
-<!-- STATS ROW 1 -->
+<!-- STAT CARDS -->
 <div class="row g-4 mb-4">
-
-    <div class="col-md-3">
-        <div class="card border-0 rounded-4 p-4 text-white shadow-sm"
-             style="background: linear-gradient(135deg,#667eea,#764ba2);">
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="col-md-3 animate-card">
+        <div class="rounded-4 p-4 text-white shadow"
+             style="background:linear-gradient(135deg,#667eea,#764ba2);">
+            <div class="d-flex justify-content-between">
                 <div>
                     <p class="small mb-1 opacity-75">Total Members</p>
-                    <h2 class="fw-bold mb-0">@ViewBag.TotalMembers</h2>
+                    <div class="stat-num">@ViewBag.TotalMembers</div>
                     <small class="opacity-75">
+                        <i class="bi bi-circle-fill me-1"
+                           style="font-size:0.4rem;color:#4ade80;"></i>
                         @ViewBag.ActiveMembers Active
                     </small>
                 </div>
-                <div style="font-size:2.5rem; opacity:0.25;">
-                    <i class="bi bi-people-fill"></i>
-                </div>
+                <i class="bi bi-people-fill opacity-25"
+                   style="font-size:3rem;"></i>
             </div>
             <div class="mt-3">
                 <a asp-controller="Members" asp-action="Index"
-                   class="btn btn-sm btn-light btn-outline fw-bold"
+                   class="btn btn-sm text-white"
                    style="background:rgba(255,255,255,0.15);
                     border:1px solid rgba(255,255,255,0.3);
-                    color:white; font-size:0.75rem;">
+                    font-size:0.75rem;">
                     View All →
+                </a>
+                <a asp-controller="Members" asp-action="Create"
+                   class="btn btn-sm text-white ms-1"
+                   style="background:rgba(255,255,255,0.1);
+                    border:1px solid rgba(255,255,255,0.2);
+                    font-size:0.75rem;">
+                    + Add
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card border-0 rounded-4 p-4 text-white shadow-sm"
-             style="background: linear-gradient(135deg,#f093fb,#f5576c);">
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="col-md-3 animate-card">
+        <div class="rounded-4 p-4 text-white shadow"
+             style="background:linear-gradient(135deg,#f093fb,#f5576c);">
+            <div class="d-flex justify-content-between">
                 <div>
                     <p class="small mb-1 opacity-75">Trainers</p>
-                    <h2 class="fw-bold mb-0">@ViewBag.TotalTrainers</h2>
+                    <div class="stat-num">@ViewBag.TotalTrainers</div>
                     <small class="opacity-75">
+                        <i class="bi bi-circle-fill me-1"
+                           style="font-size:0.4rem;color:#4ade80;"></i>
                         @ViewBag.ActiveTrainers Active
                     </small>
                 </div>
-                <div style="font-size:2.5rem; opacity:0.25;">
-                    <i class="bi bi-person-badge-fill"></i>
-                </div>
+                <i class="bi bi-person-badge-fill opacity-25"
+                   style="font-size:3rem;"></i>
             </div>
             <div class="mt-3">
                 <a asp-controller="Trainers" asp-action="Index"
-                   class="btn btn-sm"
+                   class="btn btn-sm text-white"
                    style="background:rgba(255,255,255,0.15);
                     border:1px solid rgba(255,255,255,0.3);
-                    color:white; font-size:0.75rem;">
+                    font-size:0.75rem;">
                     View All →
+                </a>
+                <a asp-controller="Trainers" asp-action="Create"
+                   class="btn btn-sm text-white ms-1"
+                   style="background:rgba(255,255,255,0.1);
+                    border:1px solid rgba(255,255,255,0.2);
+                    font-size:0.75rem;">
+                    + Add
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card border-0 rounded-4 p-4 text-white shadow-sm"
-             style="background: linear-gradient(135deg,#4facfe,#00f2fe);">
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="col-md-3 animate-card">
+        <div class="rounded-4 p-4 text-white shadow"
+             style="background:linear-gradient(135deg,#4facfe,#00f2fe);">
+            <div class="d-flex justify-content-between">
                 <div>
                     <p class="small mb-1 opacity-75">Today's Attendance</p>
-                    <h2 class="fw-bold mb-0">@ViewBag.TodayAttendance</h2>
+                    <div class="stat-num">@ViewBag.TodayAttendance</div>
                     <small class="opacity-75">
+                        <i class="bi bi-circle-fill me-1"
+                           style="font-size:0.4rem;color:#4ade80;"></i>
                         @ViewBag.StillInside Still Inside
                     </small>
                 </div>
-                <div style="font-size:2.5rem; opacity:0.25;">
-                    <i class="bi bi-calendar2-check-fill"></i>
-                </div>
+                <i class="bi bi-calendar2-check-fill opacity-25"
+                   style="font-size:3rem;"></i>
             </div>
             <div class="mt-3">
                 <a asp-controller="Attendance" asp-action="Index"
-                   class="btn btn-sm"
+                   class="btn btn-sm text-white"
                    style="background:rgba(255,255,255,0.15);
                     border:1px solid rgba(255,255,255,0.3);
-                    color:white; font-size:0.75rem;">
+                    font-size:0.75rem;">
                     View All →
+                </a>
+                <a asp-controller="Attendance" asp-action="Create"
+                   class="btn btn-sm text-white ms-1"
+                   style="background:rgba(255,255,255,0.1);
+                    border:1px solid rgba(255,255,255,0.2);
+                    font-size:0.75rem;">
+                    + Mark
                 </a>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card border-0 rounded-4 p-4 text-white shadow-sm"
-             style="background: linear-gradient(135deg,#43e97b,#38f9d7);">
-            <div class="d-flex justify-content-between align-items-start">
+    <div class="col-md-3 animate-card">
+        <div class="rounded-4 p-4 text-white shadow"
+             style="background:linear-gradient(135deg,#43e97b,#38f9d7);">
+            <div class="d-flex justify-content-between">
                 <div>
                     <p class="small mb-1 opacity-75">Monthly Revenue</p>
-                    <h2 class="fw-bold mb-0">
+                    <div class="stat-num" style="font-size:1.6rem;">
                         Rs.@ViewBag.MonthlyRevenue.ToString("N0")
-                    </h2>
+                    </div>
                     <small class="opacity-75">
                         Total: Rs.@ViewBag.TotalRevenue.ToString("N0")
                     </small>
                 </div>
-                <div style="font-size:2.5rem; opacity:0.25;">
-                    <i class="bi bi-cash-coin"></i>
-                </div>
+                <i class="bi bi-cash-coin opacity-25"
+                   style="font-size:3rem;"></i>
             </div>
             <div class="mt-3">
                 <a asp-controller="Payments" asp-action="Index"
-                   class="btn btn-sm"
+                   class="btn btn-sm text-white"
                    style="background:rgba(255,255,255,0.15);
                     border:1px solid rgba(255,255,255,0.3);
-                    color:white; font-size:0.75rem;">
+                    font-size:0.75rem;">
                     View All →
                 </a>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- QUICK ACTION BUTTONS -->
-<div class="row g-3 mb-4">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4 p-3">
-            <div class="d-flex align-items-center gap-3 flex-wrap">
-                <span class="fw-bold text-muted small">QUICK ACTIONS:</span>
-                <a asp-controller="Members" asp-action="Create"
-                   class="btn btn-sm btn-primary fw-bold">
-                    <i class="bi bi-person-plus me-1"></i> Add Member
-                </a>
-                <a asp-controller="Trainers" asp-action="Create"
-                   class="btn btn-sm btn-danger fw-bold">
-                    <i class="bi bi-person-badge me-1"></i> Add Trainer
-                </a>
                 <a asp-controller="Payments" asp-action="Create"
-                   class="btn btn-sm btn-warning fw-bold">
-                    <i class="bi bi-cash-coin me-1"></i> Record Payment
-                </a>
-                <a asp-controller="Attendance" asp-action="Create"
-                   class="btn btn-sm btn-info fw-bold text-white">
-                    <i class="bi bi-calendar-plus me-1"></i> Mark Attendance
-                </a>
-                <a asp-controller="MembershipPlans" asp-action="Create"
-                   class="btn btn-sm btn-success fw-bold">
-                    <i class="bi bi-card-plus me-1"></i> Add Plan
+                   class="btn btn-sm text-white ms-1"
+                   style="background:rgba(255,255,255,0.1);
+                    border:1px solid rgba(255,255,255,0.2);
+                    font-size:0.75rem;">
+                    + Record
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- RECENT MEMBERS + RECENT PAYMENTS -->
-<div class="row g-4">
+<!-- EXPIRY ALERTS -->
+@if (ViewBag.ExpiringMembers != null && ((List<GymManagementSystem.Models.Payment>)ViewBag.ExpiringMembers).Count > 0)
+{
+    <div class="card border-0 shadow-sm rounded-4 mb-4 animate-fadeup">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+                Membership Expiry Alerts
+                <span class="badge bg-warning text-dark ms-2">
+                    @((List<GymManagementSystem.Models.Payment>)ViewBag.ExpiringMembers).Count
+                </span>
+            </h5>
+            @foreach (var payment in (List<GymManagementSystem.Models.Payment>)ViewBag.ExpiringMembers)
+            {
+                var daysLeft = (payment.ValidUntil.ToDateTime(TimeOnly.MinValue) - DateTime.Today).Days;
+                <div class="expiry-alert @(daysLeft <= 3 ? "expiry-critical" : "")">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@payment.Member?.FullName</strong>
+                            <span class="text-muted small ms-2">
+                                @payment.Plan?.PlanName
+                            </span>
+                        </div>
+                        <div class="text-end">
+                            @if (daysLeft <= 0)
+                            {
+                                <span class="badge bg-danger">Expired</span>
+                            }
+                            else
+                            {
+                                <span class="badge @(daysLeft <= 3 ? "bg-danger" : "bg-warning text-dark")">
+                                    @daysLeft days left
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- QUICK ACTIONS -->
+<div class="card border-0 shadow-sm rounded-4 mb-4 animate-fadeup">
+    <div class="card-body p-3">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="fw-bold text-muted small me-2">
+                <i class="bi bi-lightning-charge-fill text-warning"></i>
+                QUICK ACTIONS:
+            </span>
+            <a asp-controller="Members" asp-action="Create"
+               class="btn btn-sm btn-primary fw-bold">
+                <i class="bi bi-person-plus me-1"></i> Add Member
+            </a>
+            <a asp-controller="Trainers" asp-action="Create"
+               class="btn btn-sm btn-danger fw-bold">
+                <i class="bi bi-person-badge me-1"></i> Add Trainer
+            </a>
+            <a asp-controller="Payments" asp-action="Create"
+               class="btn btn-sm btn-warning fw-bold">
+                <i class="bi bi-cash-coin me-1"></i> Record Payment
+            </a>
+            <a asp-controller="Attendance" asp-action="Create"
+               class="btn btn-sm btn-info fw-bold text-white">
+                <i class="bi bi-calendar-plus me-1"></i> Mark Attendance
+            </a>
+            <a asp-controller="MembershipPlans" asp-action="Create"
+               class="btn btn-sm btn-success fw-bold">
+                <i class="bi bi-card-plus me-1"></i> Add Plan
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- RECENT MEMBERS + RECENT PAYMENTS (FULL WIDTH) -->
+<div class="row g-4 animate-fadeup">
 
     <!-- Recent Members -->
     <div class="col-md-6">
@@ -177,7 +258,7 @@
                         Recent Members
                     </h5>
                     <a asp-controller="Members" asp-action="Index"
-                       class="btn btn-sm btn-outline-primary">
+                       class="btn btn-sm btn-outline-primary px-3">
                         View All
                     </a>
                 </div>
@@ -187,16 +268,16 @@
                     @foreach (var member in ViewBag.RecentMembers)
                     {
                         <div class="d-flex align-items-center py-2 border-bottom">
-                            <div style="width:38px; height:38px; border-radius:50%;
+                            <div style="width:40px;height:40px;border-radius:50%;
                                 background:linear-gradient(135deg,#667eea,#764ba2);
-                                display:flex; align-items:center;
-                                justify-content:center; flex-shrink:0;">
+                                display:flex;align-items:center;
+                                justify-content:center;flex-shrink:0;">
                                 <i class="bi bi-person-fill text-white small"></i>
                             </div>
                             <div class="ms-3 flex-grow-1">
                                 <div class="fw-semibold small">@member.FullName</div>
                                 <div class="text-muted" style="font-size:0.75rem;">
-                                    @member.Plan?.PlanName ?? "No Plan"
+                                    @(member.Plan != null ? member.Plan.PlanName : "No Plan")
                                 </div>
                             </div>
                             <div>
@@ -218,7 +299,10 @@
                 }
                 else
                 {
-                    <p class="text-muted small text-center py-3">No members yet</p>
+                    <div class="text-center py-4 text-muted">
+                        <i class="bi bi-people" style="font-size:2rem;"></i>
+                        <p class="small mt-2">No members yet</p>
+                    </div>
                 }
             </div>
         </div>
@@ -234,7 +318,7 @@
                         Recent Payments
                     </h5>
                     <a asp-controller="Payments" asp-action="Index"
-                       class="btn btn-sm btn-outline-success">
+                       class="btn btn-sm btn-outline-success px-3">
                         View All
                     </a>
                 </div>
@@ -244,10 +328,10 @@
                     @foreach (var payment in ViewBag.RecentPayments)
                     {
                         <div class="d-flex align-items-center py-2 border-bottom">
-                            <div style="width:38px; height:38px; border-radius:50%;
+                            <div style="width:40px;height:40px;border-radius:50%;
                                 background:linear-gradient(135deg,#43e97b,#38f9d7);
-                                display:flex; align-items:center;
-                                justify-content:center; flex-shrink:0;">
+                                display:flex;align-items:center;
+                                justify-content:center;flex-shrink:0;">
                                 <i class="bi bi-cash text-white small"></i>
                             </div>
                             <div class="ms-3 flex-grow-1">
@@ -267,9 +351,10 @@
                 }
                 else
                 {
-                    <p class="text-muted small text-center py-3">
-                        No payments yet
-                    </p>
+                    <div class="text-center py-4 text-muted">
+                        <i class="bi bi-cash-coin" style="font-size:2rem;"></i>
+                        <p class="small mt-2">No payments yet</p>
+                    </div>
                 }
             </div>
         </div>

@@ -16,6 +16,16 @@ namespace GymManagementSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // Members expiring in next 7 days
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var next7Days = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
+
+            ViewBag.ExpiringMembers = await _context.Payments
+                .Include(p => p.Member)
+                .Include(p => p.Plan)
+                .Where(p => p.ValidUntil >= today && p.ValidUntil <= next7Days)
+                .OrderBy(p => p.ValidUntil)
+                .ToListAsync();
             // If not logged in — show landing page
             if (!User.Identity!.IsAuthenticated)
                 return View("Landing");

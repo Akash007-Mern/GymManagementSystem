@@ -1,113 +1,172 @@
 @model IEnumerable<GymManagementSystem.Models.Member>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Members";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-people-fill text-primary me-2"></i>Members
+        </h2>
+        <p class="page-subtitle">Manage all gym members</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary fw-bold px-4">
+        <i class="bi bi-person-plus me-1"></i> Add Member
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JoinDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlanId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Attendances)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Payments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Plan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trainer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.JoinDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PlanId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TrainerId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Attendances)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Payments)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Plan)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Trainer)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MemberId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MemberId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MemberId">Delete</a>
-            </td>
-        </tr>
+<!-- SEARCH + FILTER BAR -->
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0">
+                        <i class="bi bi-search text-muted"></i>
+                    </span>
+                    <input type="text" id="searchInput"
+                           class="form-control border-0 bg-light"
+                           placeholder="Search by name, phone, email..."
+                           oninput="filterTable()" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select id="statusFilter" class="form-select border-0 bg-light"
+                        onchange="filterTable()">
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="genderFilter" class="form-select border-0 bg-light"
+                        onchange="filterTable()">
+                    <option value="">All Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MEMBERS TABLE -->
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0" id="membersTable">
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Join Date</th>
+                    <th>Plan</th>
+                    <th>Trainer</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                @foreach (var member in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div style="width:36px;height:36px;border-radius:50%;
+                                    background:linear-gradient(135deg,#667eea,#764ba2);
+                                    display:flex;align-items:center;
+                                    justify-content:center;flex-shrink:0;">
+                                    <i class="bi bi-person-fill text-white"
+                                       style="font-size:0.8rem;"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold small">@member.FullName</div>
+                                    <div class="text-muted" style="font-size:0.72rem;">
+                                        @member.Email
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="small">@member.Phone</td>
+                        <td class="small">@member.Gender</td>
+                        <td class="small">
+                            @member.JoinDate.ToString("dd MMM yyyy")
+                        </td>
+                        <td>
+                            <span class="badge bg-primary-subtle text-primary">
+                                @(member.Plan?.PlanName ?? "No Plan")
+                            </span>
+                        </td>
+                        <td class="small">
+                            @(member.Trainer?.FullName ?? "—")
+                        </td>
+                        <td>
+                            @if (member.IsActive == true)
+                            {
+                                <span class="badge bg-success status-badge">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger status-badge">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@member.MemberId"
+                               class="btn btn-outline-info btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@member.MemberId"
+                               class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@member.MemberId"
+                               class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- No results message -->
+<div id="noResults" class="text-center py-5 d-none">
+    <i class="bi bi-search text-muted" style="font-size:3rem;"></i>
+    <h5 class="mt-3 text-muted">No members found</h5>
+    <p class="text-muted small">Try a different search term</p>
+</div>
+
+@section Scripts {
+    <script>
+        function filterTable() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value.toLowerCase();
+            const gender = document.getElementById('genderFilter').value.toLowerCase();
+            const rows = document.querySelectorAll('#tableBody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const statusBadge = row.querySelector('.status-badge')?.innerText.toLowerCase() || '';
+                const genderCell = row.cells[2]?.innerText.toLowerCase() || '';
+
+                const matchSearch = text.includes(search);
+                const matchStatus = status === '' || statusBadge.includes(status);
+                const matchGender = gender === '' || genderCell.includes(gender);
+
+                if (matchSearch && matchStatus && matchGender) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('noResults').classList.toggle('d-none', visibleCount > 0);
+            document.getElementById('membersTable').classList.toggle('d-none', visibleCount === 0);
+        }
+    </script>
 }
-    </tbody>
-</table>
