@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // 1. Connect to database
 builder.Services.AddDbContext<GymDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GymConnection")));
@@ -33,6 +34,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // 4. Add MVC
 builder.Services.AddControllersWithViews();
+
+// Register Email Service
+builder.Services.AddScoped<GymManagementSystem.Services.EmailService>();
 
 var app = builder.Build();
 

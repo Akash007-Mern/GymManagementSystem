@@ -3,162 +3,529 @@
     Layout = "~/Views/Shared/_StaticLayout.cshtml";
 }
 
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        min-height: 92vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,193,7,0.08) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            border-radius: 50%;
+        }
+
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255,193,7,0.15);
+        border: 1px solid rgba(255,193,7,0.3);
+        color: #ffc107;
+        padding: 6px 18px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 3.8rem;
+        font-weight: 800;
+        line-height: 1.1;
+        color: white;
+    }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #ffc107, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    .hero-desc {
+        font-size: 1.1rem;
+        color: rgba(255,255,255,0.6);
+        max-width: 500px;
+        line-height: 1.7;
+    }
+
+    .hero-btn-primary {
+        background: linear-gradient(135deg, #ffc107, #ff8c00);
+        color: #1a1a2e;
+        font-weight: 700;
+        padding: 14px 32px;
+        border-radius: 12px;
+        border: none;
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(255,193,7,0.3);
+    }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255,193,7,0.4);
+            color: #1a1a2e;
+        }
+
+    .hero-btn-secondary {
+        background: rgba(255,255,255,0.08);
+        color: white;
+        font-weight: 600;
+        padding: 14px 32px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .hero-btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+    .floating-card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        animation: float 3s ease-in-out infinite;
+    }
+
+        .floating-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .floating-card:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .floating-card:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    .stat-pill {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 50px;
+        padding: 8px 20px;
+        color: white;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .feature-section {
+        background: #f8f9fa;
+        padding: 80px 0;
+    }
+
+    .feature-card-new {
+        background: white;
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+    }
+
+        .feature-card-new:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.8rem;
+    }
+
+    .stats-section {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        padding: 60px 0;
+    }
+
+    .stat-box {
+        text-align: center;
+        color: white;
+        padding: 20px;
+    }
+
+        .stat-box h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffc107, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+</style>
+
 <!-- HERO SECTION -->
-<div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 100px 0; text-align: center;">
-    <div class="container">
-        <i class="bi bi-lightning-charge-fill text-warning" style="font-size: 4rem;"></i>
-        <h1 class="mt-3 fw-bold" style="font-size: 3rem;">Welcome to FitZone</h1>
-        <p class="lead mb-4" style="opacity: 0.85;">
-            A complete Gym Management System — manage members, trainers,<br />
-            plans, payments and attendance all in one place.
-        </p>
-        <a asp-area="Identity"
-           asp-page="/Account/Login"
-           class="btn btn-warning btn-lg fw-bold me-3">
-            <i class="bi bi-speedometer2"></i> Go to Dashboard
-        </a>
-        <a asp-area="Identity"
-           asp-page="/Account/Login"
-           class="btn btn-primary btn-sm px-4">
-            Manage Members
-        </a>
+<div class="hero-section">
+    <div class="container position-relative" style="z-index:1;">
+        <div class="row align-items-center">
+
+            <!-- LEFT SIDE -->
+            <div class="col-lg-6 text-white">
+                <div class="hero-badge">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>
+                    PROFESSIONAL GYM MANAGEMENT
+                </div>
+
+                <h1 class="hero-title mb-4">
+                    Manage Your<br />
+                    Gym with <span>FitZone</span>
+                </h1>
+
+                <p class="hero-desc mb-5">
+                    A complete gym management system — track members,
+                    trainers, payments and attendance all from one
+                    powerful dashboard.
+                </p>
+
+                <div class="d-flex gap-3 flex-wrap mb-5">
+                    <a asp-controller="Account" asp-action="Login"
+                       class="hero-btn-primary">
+                        <i class="bi bi-speedometer2"></i>
+                        Go to Dashboard
+                    </a>
+                    <a asp-controller="Account" asp-action="Register"
+                       class="hero-btn-secondary">
+                        <i class="bi bi-person-plus"></i>
+                        Join as Member
+                    </a>
+                </div>
+
+                <!-- Mini stats row -->
+                <div class="d-flex gap-3 flex-wrap">
+                    <div class="stat-pill">
+                        <i class="bi bi-people-fill text-warning"></i>
+                        Member Tracking
+                    </div>
+                    <div class="stat-pill">
+                        <i class="bi bi-cash-coin text-warning"></i>
+                        Payment Records
+                    </div>
+                    <div class="stat-pill">
+                        <i class="bi bi-calendar-check text-warning"></i>
+                        Attendance
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE — Floating Cards -->
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <div class="row g-3">
+
+                    <div class="col-6">
+                        <div class="floating-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div style="width:40px;height:40px;border-radius:10px;
+                                    background:linear-gradient(135deg,#667eea,#764ba2);
+                                    display:flex;align-items:center;justify-content:center;">
+                                    <i class="bi bi-people-fill text-white"></i>
+                                </div>
+                                <div class="text-white fw-bold">Members</div>
+                            </div>
+                            <div class="text-warning fw-bold" style="font-size:1.5rem;">
+                                Track All
+                            </div>
+                            <div style="color:rgba(255,255,255,0.5);font-size:0.8rem;">
+                                Active & Inactive
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="floating-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div style="width:40px;height:40px;border-radius:10px;
+                                    background:linear-gradient(135deg,#f093fb,#f5576c);
+                                    display:flex;align-items:center;justify-content:center;">
+                                    <i class="bi bi-cash-coin text-white"></i>
+                                </div>
+                                <div class="text-white fw-bold">Payments</div>
+                            </div>
+                            <div class="text-warning fw-bold" style="font-size:1.5rem;">
+                                Auto Track
+                            </div>
+                            <div style="color:rgba(255,255,255,0.5);font-size:0.8rem;">
+                                Monthly Revenue
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="floating-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div style="width:40px;height:40px;border-radius:10px;
+                                    background:linear-gradient(135deg,#4facfe,#00f2fe);
+                                    display:flex;align-items:center;justify-content:center;">
+                                    <i class="bi bi-calendar-check text-white"></i>
+                                </div>
+                                <div class="text-white fw-bold">Attendance</div>
+                            </div>
+                            <div class="text-warning fw-bold" style="font-size:1.5rem;">
+                                Daily Log
+                            </div>
+                            <div style="color:rgba(255,255,255,0.5);font-size:0.8rem;">
+                                Check-in & Out
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="floating-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div style="width:40px;height:40px;border-radius:10px;
+                                    background:linear-gradient(135deg,#43e97b,#38f9d7);
+                                    display:flex;align-items:center;justify-content:center;">
+                                    <i class="bi bi-person-badge-fill text-white"></i>
+                                </div>
+                                <div class="text-white fw-bold">Trainers</div>
+                            </div>
+                            <div class="text-warning fw-bold" style="font-size:1.5rem;">
+                                Manage
+                            </div>
+                            <div style="color:rgba(255,255,255,0.5);font-size:0.8rem;">
+                                Specialties & Info
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
 <!-- STATS SECTION -->
-<div class="container mt-5">
-    <div class="row g-4 mb-5">
-
-        <div class="col-md-3">
-            <div class="rounded-4 p-4 text-white shadow"
-                 style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div style="font-size:2.2rem; font-weight:700;">—</div>
-                        <div style="font-size:0.9rem; opacity:0.85;">Total Members</div>
-                    </div>
-                    <i class="bi bi-people-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+<div class="stats-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2>100%</h2>
+                    <p class="text-white-50 mb-0">Free to Use</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2>5+</h2>
+                    <p class="text-white-50 mb-0">Core Modules</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2>2</h2>
+                    <p class="text-white-50 mb-0">User Roles</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2>PDF</h2>
+                    <p class="text-white-50 mb-0">Export Reports</p>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="rounded-4 p-4 text-white shadow"
-                 style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div style="font-size:2.2rem; font-weight:700;">—</div>
-                        <div style="font-size:0.9rem; opacity:0.85;">Trainers</div>
-                    </div>
-                    <i class="bi bi-person-badge-fill" style="font-size:2.5rem; opacity:0.3;"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="rounded-4 p-4 text-white shadow"
-                 style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div style="font-size:2.2rem; font-weight:700;">—</div>
-                        <div style="font-size:0.9rem; opacity:0.85;">Active Plans</div>
-                    </div>
-                    <i class="bi bi-card-checklist" style="font-size:2.5rem; opacity:0.3;"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="rounded-4 p-4 text-white shadow"
-                 style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div style="font-size:2.2rem; font-weight:700;">—</div>
-                        <div style="font-size:0.9rem; opacity:0.85;">Payments This Month</div>
-                    </div>
-                    <i class="bi bi-cash-coin" style="font-size:2.5rem; opacity:0.3;"></i>
-                </div>
-            </div>
-        </div>
-
     </div>
+</div>
 
-    <!-- QUICK ACCESS CARDS -->
-    <h4 class="fw-bold mb-4">Quick Access</h4>
-    <div class="row g-4 mb-5">
-
-        <div class="col-md-4">
-            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
-                 style="transition: transform 0.2s;"
-                 onmouseover="this.style.transform='translateY(-6px)'"
-                 onmouseout="this.style.transform='translateY(0)'">
-
-                <i class="bi bi-people-fill text-primary" style="font-size:2.5rem;"></i>
-
-                <h5 class="fw-bold mt-3">Members</h5>
-
-                <p class="text-muted small">
-                    Register new members, view profiles, update or remove existing members.
-                </p>
-
-                <a asp-area="Identity"
-                   asp-page="/Account/Login"
-                   class="btn btn-primary btn-sm px-4">
-                    Manage Members
-                </a>
-
+<!-- FEATURES SECTION -->
+<div class="feature-section" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="hero-badge" style="background:rgba(102,126,234,0.1);
+                border-color:rgba(102,126,234,0.3);color:#667eea;">
+                FEATURES
             </div>
+            <h2 class="fw-bold mt-2" style="font-size:2.2rem;">
+                Everything You Need
+            </h2>
+            <p class="text-muted">
+                Manage your entire gym from one place
+            </p>
         </div>
 
-        <div class="col-md-4">
-            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
-                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
-                <i class="bi bi-person-badge-fill text-danger" style="font-size:2.5rem;"></i>
-                <h5 class="fw-bold mt-3">Trainers</h5>
-                <p class="text-muted small">Manage your gym trainers, their specialties and member assignments.</p>
-                <a asp-controller="Trainers" asp-action="Index" class="btn btn-danger btn-sm px-4">Manage Trainers</a>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card-new">
+                    <div class="feature-icon"
+                         style="background:linear-gradient(135deg,#667eea20,#764ba220);">
+                        <i class="bi bi-people-fill text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">Member Management</h5>
+                    <p class="text-muted small">
+                        Add, edit, view and manage all gym members.
+                        Track active and inactive members easily.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login"
+                       class="btn btn-sm btn-primary px-4 fw-bold">
+                        Manage →
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card-new">
+                    <div class="feature-icon"
+                         style="background:linear-gradient(135deg,#f093fb20,#f5576c20);">
+                        <i class="bi bi-person-badge-fill text-danger"></i>
+                    </div>
+                    <h5 class="fw-bold">Trainer Management</h5>
+                    <p class="text-muted small">
+                        Manage trainers with their specialties,
+                        contact info and assign them to members.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login"
+                       class="btn btn-sm btn-danger px-4 fw-bold">
+                        Manage →
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card-new">
+                    <div class="feature-icon"
+                         style="background:linear-gradient(135deg,#43e97b20,#38f9d720);">
+                        <i class="bi bi-cash-stack text-success"></i>
+                    </div>
+                    <h5 class="fw-bold">Payment Tracking</h5>
+                    <p class="text-muted small">
+                        Record all fee payments, track monthly revenue
+                        and get alerts for expiring memberships.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login"
+                       class="btn btn-sm btn-success px-4 fw-bold">
+                        Manage →
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card-new">
+                    <div class="feature-icon"
+                         style="background:linear-gradient(135deg,#4facfe20,#00f2fe20);">
+                        <i class="bi bi-calendar2-check-fill text-info"></i>
+                    </div>
+                    <h5 class="fw-bold">Attendance System</h5>
+                    <p class="text-muted small">
+                        Mark daily attendance with check-in and
+                        check-out times. Track who is inside the gym.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login"
+                       class="btn btn-sm btn-info px-4 fw-bold text-white">
+                        Manage →
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card-new">
+                    <div class="feature-icon"
+                         style="background:linear-gradient(135deg,#ffc10720,#ff8c0020);">
+                        <i class="bi bi-card-checklist text-warning"></i>
+                    </div>
+                    <h5 class="fw-bold">Membership Plans</h5>
+                    <p class="text-muted small">
+                        Create monthly, quarterly and yearly plans
+                        with custom pricing and durations.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login"
+                       class="btn btn-sm btn-warning px-4 fw-bold">
+                        Manage →
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card-new">
+                    <div class="feature-icon"
+                         style="background:linear-gradient(135deg,#a8edea20,#fed6e320);">
+                        <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
+                    </div>
+                    <h5 class="fw-bold">PDF Export</h5>
+                    <p class="text-muted small">
+                        Export members and payment data as
+                        professional PDF reports with one click.
+                    </p>
+                    <a asp-controller="Account" asp-action="Login"
+                       class="btn btn-sm btn-outline-danger px-4 fw-bold">
+                        Export →
+                    </a>
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="col-md-4">
-            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
-                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
-                <i class="bi bi-card-checklist text-success" style="font-size:2.5rem;"></i>
-                <h5 class="fw-bold mt-3">Membership Plans</h5>
-                <p class="text-muted small">Create monthly, quarterly and yearly plans with custom pricing.</p>
-                <a asp-controller="MembershipPlans" asp-action="Index" class="btn btn-success btn-sm px-4">Manage Plans</a>
-            </div>
+<!-- CTA SECTION -->
+<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:80px 0;">
+    <div class="container text-center">
+        <h2 class="text-white fw-bold mb-3" style="font-size:2.2rem;">
+            Ready to Get Started?
+        </h2>
+        <p class="text-white-50 mb-4">
+            Login as Admin to manage your gym or register as a member.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a asp-controller="Account" asp-action="Login"
+               class="hero-btn-primary">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Admin Login
+            </a>
+            <a asp-controller="Account" asp-action="Register"
+               class="hero-btn-secondary">
+                <i class="bi bi-person-plus"></i>
+                Member Register
+            </a>
         </div>
-
-        <div class="col-md-4">
-            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
-                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
-                <i class="bi bi-cash-stack text-warning" style="font-size:2.5rem;"></i>
-                <h5 class="fw-bold mt-3">Payments</h5>
-                <p class="text-muted small">Record member fee payments and track full payment history.</p>
-                <a asp-controller="Payments" asp-action="Index" class="btn btn-warning btn-sm px-4">Manage Payments</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
-                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
-                <i class="bi bi-calendar2-check-fill text-info" style="font-size:2.5rem;"></i>
-                <h5 class="fw-bold mt-3">Attendance</h5>
-                <p class="text-muted small">Mark daily attendance and view member check-in history.</p>
-                <a asp-controller="Attendance" asp-action="Index" class="btn btn-info btn-sm px-4">Manage Attendance</a>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="bg-white rounded-4 p-4 text-center shadow-sm h-100"
-                 style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
-                <i class="bi bi-bar-chart-fill text-secondary" style="font-size:2.5rem;"></i>
-                <h5 class="fw-bold mt-3">Reports</h5>
-                <p class="text-muted small">View statistics and export data records for your gym.</p>
-                <a href="#" class="btn btn-secondary btn-sm px-4">Coming Soon</a>
-            </div>
-        </div>
-
     </div>
 </div>

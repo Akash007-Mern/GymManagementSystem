@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Pay with eSewa";
+    Layout = "~/Views/Shared/_StaticLayout.cshtml";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-controller="Account" asp-action="MyProfile"
+       class="btn btn-outline-secondary btn-sm me-3">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+        <h2 class="page-title">
+            <i class="bi bi-phone-fill text-success me-2"></i>
+            Pay with eSewa
+        </h2>
+        <p class="page-subtitle">
+            Complete payment using eSewa digital wallet
+        </p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+
+        <!-- Payment Summary -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-receipt me-2 text-warning"></i>
+                    Payment Summary
+                </h5>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Member</span>
+                    <strong>@ViewBag.Member?.FullName</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Plan</span>
+                    <strong>@ViewBag.Plan?.PlanName</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Duration</span>
+                    <strong>@ViewBag.Plan?.DurationDays days</strong>
+                </div>
+                <div class="d-flex justify-content-between py-3">
+                    <span class="fw-bold fs-5">Total Amount</span>
+                    <strong class="text-success fs-4">
+                        Rs. @ViewBag.Amount
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEBUG BOX — Remove after testing -->
+        <div class="alert alert-secondary small mb-3 text-start">
+            <strong>🔍 Debug Info:</strong><br />
+            Amount: <code>@ViewBag.Amount</code><br />
+            UUID: <code>@ViewBag.TransactionUuid</code><br />
+            Code: <code>@ViewBag.MerchantCode</code><br />
+            Signature: <code>@ViewBag.Signature</code><br />
+            Message signed: <code>@ViewBag.DebugMessage</code>
+        </div>
+
+        <!-- eSewa Pay Form -->
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 text-center">
+
+                <div style="width:80px;height:80px;border-radius:50%;
+                    background:linear-gradient(135deg,#60bb46,#4a9a34);
+                    display:flex;align-items:center;
+                    justify-content:center;
+                    margin:0 auto 16px;font-size:2rem;">
+                    📱
+                </div>
+
+                <h5 class="fw-bold mb-1">eSewa Digital Wallet</h5>
+                <p class="text-muted small mb-4">
+                    You will be redirected to eSewa to complete
+                    payment securely
+                </p>
+
+                <form action="@ViewBag.ESewaUrl" method="POST">
+                    <input type="hidden" name="amount"
+                           value="@ViewBag.Amount" />
+                    <input type="hidden" name="tax_amount"
+                           value="0" />
+                    <input type="hidden" name="total_amount"
+                           value="@ViewBag.Amount" />
+                    <input type="hidden" name="transaction_uuid"
+                           value="@ViewBag.TransactionUuid" />
+                    <input type="hidden" name="product_code"
+                           value="@ViewBag.MerchantCode" />
+                    <input type="hidden" name="product_service_charge"
+                           value="0" />
+                    <input type="hidden" name="product_delivery_charge"
+                           value="0" />
+                    <input type="hidden" name="success_url"
+                           value="@ViewBag.SuccessUrl" />
+                    <input type="hidden" name="failure_url"
+                           value="@ViewBag.FailureUrl" />
+                    <input type="hidden" name="signed_field_names"
+                           value="total_amount,transaction_uuid,product_code" />
+                    <input type="hidden" name="signature"
+                           value="@ViewBag.Signature" />
+
+                    <button type="submit"
+                            class="btn btn-lg fw-bold w-100 py-3 text-white"
+                            style="background:linear-gradient(
+                        135deg,#60bb46,#4a9a34);
+                        border-radius:12px;border:none;
+                        box-shadow:0 6px 20px rgba(96,187,70,0.3);">
+                        <i class="bi bi-phone-fill me-2"></i>
+                        Pay Rs. @ViewBag.Amount with eSewa
+                    </button>
+                </form>
+
+                <div class="alert alert-warning mt-3 small text-start">
+                    <i class="bi bi-info-circle me-1"></i>
+                    <strong>Sandbox Test Credentials:</strong><br />
+                    eSewa ID: <code>9806800001</code><br />
+                    Password: <code>Nepal@123</code><br />
+                    MPIN: <code>1122</code> &nbsp;
+                    OTP: <code>123456</code>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

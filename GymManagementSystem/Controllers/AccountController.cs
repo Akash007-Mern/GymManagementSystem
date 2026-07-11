@@ -1,31 +1,43 @@
-﻿using GymManagementSystem.Models;
+﻿using GymManagementSystem.Data;
+using GymManagementSystem.Models;
+using GymManagementSystem.Services;
 using GymManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementSystem.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly GymDbContext _context;
+        private readonly EmailService _emailService;
+        private readonly IConfiguration _config;
 
-        public AccountController(UserManager<ApplicationUser> userManager,
-                                 SignInManager<ApplicationUser> signInManager)
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            GymDbContext context,
+            EmailService emailService,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
+            _emailService = emailService;
+            _config = config;
         }
 
         // ─── LOGIN ───────────────────────────────────────────
         [HttpGet]
         public IActionResult Login()
         {
-            // If already logged in, go to home
             if (User.Identity!.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
-
             return View();
         }
 
@@ -42,7 +54,6 @@ namespace GymManagementSystem.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 var roles = await _userManager.GetRolesAsync(user!);
 
-                // Redirect based on role
                 if (roles.Contains("Admin"))
                     return RedirectToAction("Index", "Home");
                 else
@@ -53,13 +64,12 @@ namespace GymManagementSystem.Controllers
             return View(model);
         }
 
-        // ─── REGISTER (Member self-registration) ─────────────
+        // ─── REGISTER ────────────────────────────────────────
         [HttpGet]
         public IActionResult Register()
         {
             if (User.Identity!.IsAuthenticated)
                 return RedirectToAction("Index", "Home");
-
             return View();
         }
 
@@ -91,20 +101,55 @@ namespace GymManagementSystem.Controllers
             return View(model);
         }
 
-        // ─── MY PROFILE (Member sees own profile) ────────────
+        // ─── MY PROFILE ───────────────────────────────────────
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> MyProfile()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return RedirectToAction("Login");
+
+            // Get all available plans
+            ViewBag.Plans = await _context.MembershipPlans.ToListAsync();
+
+            // Find member record — try email first, then name
+            var memberRecord = await _context.Members
+                .FirstOrDefaultAsync(m => m.Email == user.Email);
+
+            if (memberRecord == null && !string.IsNullOrEmpty(user.FullName))
+            {
+                memberRecord = await _context.Members
+                    .FirstOrDefaultAsync(m => m.FullName.ToLower()
+                        == user.FullName.ToLower());
+            }
+
+            if (memberRecord != null)
+            {
+                ViewBag.MemberDbId = memberRecord.MemberId;
+
+                // Get latest payment for this member
+                var latestPayment = await _context.Payments
+                    .Include(p => p.Plan)
+                    .Where(p => p.MemberId == memberRecord.MemberId)
+                    .OrderByDescending(p => p.PaymentDate)
+                    .FirstOrDefaultAsync();
+
+                ViewBag.CurrentPayment = latestPayment;
+            }
+            else
+            {
+                ViewBag.MemberDbId = null;
+                ViewBag.CurrentPayment = null;
+            }
+
             return View(user);
         }
 
         // ─── LOGOUT ──────────────────────────────────────────
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
 
-            // Clear all cookies and cache so old form data doesn't show
             foreach (var cookie in Request.Cookies.Keys)
             {
                 Response.Cookies.Delete(cookie);
@@ -117,15 +162,116 @@ namespace GymManagementSystem.Controllers
             return RedirectToAction("LogoutAnimation", "Account");
         }
 
-        // New action - shows animation then redirects to home
+        // ─── LOGOUT ANIMATION ─────────────────────────────────
         [AllowAnonymous]
         public IActionResult LogoutAnimation()
         {
             return View();
         }
-        // ─── ACCESS DENIED ───────────────────────────────────
+
+        // ─── ACCESS DENIED ────────────────────────────────────
         public IActionResult AccessDenied()
         {
+            return View();
+        }
+
+        // ─── FORGOT PASSWORD ──────────────────────────────────
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError("", "Please enter your email.");
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                TempData["ForgotSuccess"] = true;
+                return View();
+            }
+
+            // Generate reset token
+            var token = await _userManager
+                .GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Uri.EscapeDataString(token);
+
+            // Build reset URL using fixed base URL from appsettings
+            var baseUrl = _config["EmailSettings:BaseUrl"]
+                ?? $"{Request.Scheme}://{Request.Host}";
+
+            var resetLink = $"{baseUrl}/Account/ResetPassword" +
+                $"?token={encodedToken}" +
+                $"&email={Uri.EscapeDataString(email)}";
+
+            // Send email
+            try
+            {
+                await _emailService.SendPasswordResetEmailAsync(
+                    email, user.FullName, resetLink);
+                TempData["ForgotSuccess"] = true;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("",
+                    $"Email error: {ex.Message}");
+            }
+
+            return View();
+        }
+
+        // ─── RESET PASSWORD ───────────────────────────────────
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+                return RedirectToAction("Login");
+
+            ViewBag.Token = token;
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(
+            string token, string email,
+            string newPassword, string confirmPassword)
+        {
+            if (newPassword != confirmPassword)
+            {
+                ModelState.AddModelError("", "Passwords do not match.");
+                ViewBag.Token = token;
+                ViewBag.Email = email;
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            var decodedToken = Uri.UnescapeDataString(token);
+            var result = await _userManager.ResetPasswordAsync(
+                user, decodedToken, newPassword);
+
+            if (result.Succeeded)
+            {
+                TempData["ResetSuccess"] = true;
+                return RedirectToAction("Login");
+            }
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            ViewBag.Token = token;
+            ViewBag.Email = email;
             return View();
         }
     }

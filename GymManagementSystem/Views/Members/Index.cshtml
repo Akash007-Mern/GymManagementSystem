@@ -112,17 +112,31 @@
                             }
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@member.MemberId"
+                            <a asp-action="Details"
+                               asp-route-id="@member.MemberId"
                                class="btn btn-outline-info btn-sm">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a asp-action="Edit" asp-route-id="@member.MemberId"
+
+                            <a asp-action="Edit"
+                               asp-route-id="@member.MemberId"
                                class="btn btn-outline-warning btn-sm">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <a asp-action="Delete" asp-route-id="@member.MemberId"
+
+                            <a asp-action="Delete"
+                               asp-route-id="@member.MemberId"
                                class="btn btn-outline-danger btn-sm">
                                 <i class="bi bi-trash"></i>
+                            </a>
+
+                            <a asp-controller="ESewa"
+                               asp-action="Pay"
+                               asp-route-memberId="@member.MemberId"
+                               asp-route-planId="@(member.PlanId ?? 1)"
+                               class="btn btn-success btn-sm"
+                               title="Pay with eSewa">
+                                <i class="bi bi-phone-fill"></i>
                             </a>
                         </td>
                     </tr>
